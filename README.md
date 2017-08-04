@@ -8,6 +8,9 @@ Instead, change history for datasets is a part of the underlying infrastructure 
 
 ## Approach
 
-![alt text](https://github.com/p18e3/Do-it-Right-EF_ChangeLog/blob/master/Approach.png "The approach")
+<p align="center">
+  <img src="https://github.com/p18e3/Do-it-Right-EF_ChangeLog/blob/master/Approach.png" width="500" />
+</p>
+
 
 ## Implementation
