@@ -90,7 +90,9 @@ private void WriteChangeLog()
 {
     string currentUser = "John Wayne"; // Actually you would use here the user id from the current HttpContext / Thread.
     DateTime currentDateTime = DateTime.Now;            
-    var dbEntityEntries = ChangeTracker.Entries<IHaveChangeLog>();
+    var dbEntityEntries = ChangeTracker.Entries<IHaveChangeLog>()
+                                       .Where(e => e.State != EntityState.Detached
+                                                && e.State != EntityState.Unchanged);
 
     foreach (var item in dbEntityEntries)
     {                
