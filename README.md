@@ -35,3 +35,47 @@ To make our context aware of the database changes, we use the `ChangeTracker` of
 * Unchanged.
 
 In the given scenario, we are only interested the CUD-Operations of the `EntityStates` enum.
+
+To simplify iterating through the enumeration of the modified entities, I have created the interface `IHaveChangeLog` for all the entities we want to provide a change log for:
+
+```CSharp
+public interface IHaveChangeLog
+{
+  DateTime CreatedAt { get; set; }
+  string CreatedAtAuthor { get; set; }
+  
+  DateTime LastModifiedAt { get; set; }
+  string LastModifiedAuthor { get; set; }        
+}
+```
+
+By that, we are in the happy situation to get only the `IHaveChangeLog` implementing entities out of all the modified entities in the context by calling
+
+```CSharp
+var dbEntityEntries = ChangeTracker.Entries<IHaveChangeLog>();
+```
+
+The last step is now to find out for each entity whether it was created, modified or deleted from the database context.
+We can achieve this with the above introduced `EntityState`:
+
+```CSharp
+foreach (var item in dbEntityEntries)
+{                
+    if (item.State == EntityState.Added)
+    {
+        item.Entity.CreatedAtAuthor = currentUser;
+        item.Entity.CreatedAt = currentDateTime;                    
+    }
+
+    item.Entity.LastModifiedAuthor = currentUser;
+    item.Entity.LastModifiedAt = currentDateTime;                
+}
+```
+
+Now there are three kinds of EntityStates, we want to handle:
+
+| EntityState | Action |
+|:------------|:-------|
+|Added|Write "created" and "modified" change log|
+|Modified|Write "modified" change log|
+|Deleted|Write "modified" change log|
