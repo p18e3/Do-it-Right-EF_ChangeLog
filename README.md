@@ -73,7 +73,7 @@ else if (item.State == EntityState.Deleted)
 }
 ```
 
-The next thing we have to take into consideration is that there are three kinds of EntityStates, we want to handle:
+To write change log information, we have to take into consideration that there are three kinds of EntityStates, we want to handle:
 
 | EntityState | Action |
 |:------------|:-------|
@@ -81,4 +81,54 @@ The next thing we have to take into consideration is that there are three kinds 
 |Modified|Write "modified" change log|
 |Deleted|Write "modified" change log|
 
-The states Detached and Unchanged are not of interest in our specific case, since the Detached-state is not an CUD-operation and the Unchanged-state does not need to be logged.
+The states *Detached* and *Unchanged* are not of interest in our specific case, since the Detached-state is not an CUD-operation and the Unchanged-state does not need to be logged.
+
+In its entirety, the method for writing the change log information looks like the following:
+
+```CSharp
+private void WriteChangeLog()
+{
+    string currentUser = "John Wayne"; // Actually you would use here the user id from the current HttpContext / Thread.
+    DateTime currentDateTime = DateTime.Now;            
+    var dbEntityEntries = ChangeTracker.Entries<IHaveChangeLog>();
+
+    foreach (var item in dbEntityEntries)
+    {                
+        if (item.State == EntityState.Added)
+        {
+            item.Entity.CreatedAtAuthor = currentUser;
+            item.Entity.CreatedAt = currentDateTime;                    
+        }
+
+        item.Entity.LastModifiedAuthor = currentUser;
+        item.Entity.LastModifiedAt = currentDateTime;                
+    }
+}
+```
+
+Therewith we have implemented a generic change log mechanism in Entity Framework with just 18 (!) lines of code.
+Finally, `WriteChangeLog()` has to be called in each of the three overridden `SaveChanges()` methods of the database context:
+
+```CSharp
+public override int SaveChanges()
+{
+  WriteChangeLog();
+  return base.SaveChanges();
+}
+```
+
+```CSharp
+public override Task<int> SaveChangesAsync()
+{
+  WriteChangeLog();
+  return base.SaveChangesAsync();
+}
+```
+
+```CSharp
+public override Task<int> SaveChangesAsync(CancellationToken cancellationToken)
+{
+  WriteChangeLog();
+  return base.SaveChangesAsync(cancellationToken);
+}
+```
