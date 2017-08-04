@@ -57,7 +57,7 @@ namespace DiR.EfChangeLog.Contexts
 
         private void WriteChangeLog()
         {
-            string currentUser = "John Wayne";
+            string currentUser = "John Wayne"; // Actually you would use here the user id from the current HttpContext / Thread.
             DateTime currentDateTime = DateTime.Now;            
             var dbEntityEntries = ChangeTracker.Entries<IHaveChangeLog>();            
 
