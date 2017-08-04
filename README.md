@@ -24,4 +24,14 @@ The blue arrows in the graphic show the actual workflow when working with Entity
 
 ## Implementation
 
-To achieve this goal, we have to extend our `DbContext` instance and take advantage of the open design of `DbContext`. This enables us to override the virtual `SaveChanges()` and `SaveChangesAsync()` members of our database context and place extension logic before committing the changes to the database.
+To achieve this goal, we have to extend our `DbContext` instance and take advantage of the open design of `DbContext`. This enables us to override the virtual `SaveChanges()` and `SaveChangesAsync()` members of our specific database context and place extension logic before committing the changes to the database.
+
+To make our context aware of the database changes, we use the `ChangeTracker` of Entity Framework, that enables us to query over the so-called `DbEntityEntries` which represent the entities that have been modified with the required metadata represented by the `EntityState` enum. The term modified means in this case, that one of the following operations was executed on an entity:
+
+* Added,
+* Modified,
+* Deleted,
+* Detached,
+* Unchanged.
+
+In the given scenario, we are only interested the CUD-Operations of the `EntityStates` enum.
