@@ -80,4 +80,4 @@ The next thing we have to take into consideration is that there are three kinds 
 |Modified|Write "modified" change log|
 |Deleted|Write "modified" change log|
 
-The states Detached and and Unchanged are not of interest in our specific case, since the Detached-state is not an CUD-operation and the Unchanged-state does not need to be logged.
+The states Detached and Unchanged are not of interest in our specific case, since the Detached-state is not an CUD-operation and the Unchanged-state does not need to be logged.
