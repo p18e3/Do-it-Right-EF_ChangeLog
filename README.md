@@ -22,5 +22,6 @@ The blue arrows in the graphic show the actual workflow when working with Entity
   <img src="https://github.com/p18e3/Do-it-Right-EF_ChangeLog/blob/master/Approach.png" width="500" />
 </p>
 
-
 ## Implementation
+
+To achieve this goal, we have to extend our `DbContext` instance and take advantage of the open design of `DbContext`. This enables us to override the virtual `SaveChanges()` and `SaveChangesAsync()` members of our database context and place extension logic before committing the changes to the database.
