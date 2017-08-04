@@ -59,16 +59,17 @@ The last step is now to find out for each entity whether it was created, modifie
 We can achieve this with the above introduced `EntityState`:
 
 ```CSharp
-foreach (var item in dbEntityEntries)
-{                
-    if (item.State == EntityState.Added)
-    {
-        item.Entity.CreatedAtAuthor = currentUser;
-        item.Entity.CreatedAt = currentDateTime;                    
-    }
-
-    item.Entity.LastModifiedAuthor = currentUser;
-    item.Entity.LastModifiedAt = currentDateTime;                
+if (item.State == EntityState.Added)
+{
+  // ...                   
+}
+else if (item.State == EntityState.Modified)
+{
+  // ...
+}
+else if (item.State == EntityState.Deleted)
+{
+  // ...
 }
 ```
 
