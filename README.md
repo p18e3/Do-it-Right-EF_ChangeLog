@@ -108,7 +108,7 @@ private void WriteChangeLog()
 }
 ```
 
-Therewith we have implemented a generic change log mechanism in Entity Framework with just 18 (!) lines of code.
+Therewith we have implemented a generic change log mechanism in Entity Framework with just 17 (!) lines of code.
 Finally, `WriteChangeLog()` has to be called in each of the three overridden `SaveChanges()` methods of the database context:
 
 ```CSharp
