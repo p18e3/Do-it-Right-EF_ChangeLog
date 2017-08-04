@@ -72,10 +72,12 @@ foreach (var item in dbEntityEntries)
 }
 ```
 
-Now there are three kinds of EntityStates, we want to handle:
+The next thing we have to take into consideration is that there are three kinds of EntityStates, we want to handle:
 
 | EntityState | Action |
 |:------------|:-------|
 |Added|Write "created" and "modified" change log|
 |Modified|Write "modified" change log|
 |Deleted|Write "modified" change log|
+
+The states Detached and and Unchanged are not of interest in our specific case, since the Detached-state is not an CUD-operation and the Unchanged-state does not need to be logged.
